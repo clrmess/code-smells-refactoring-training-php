@@ -24,9 +24,9 @@ class Movie
         return $this->priceCode;
     }
 
-    public function setPriceCode(int $code)
+    public function setPriceCode(int $code): void
     {
-        return $this->priceCode = $code;
+        $this->priceCode = $code;
     }
 
     public function getTitle(): string
