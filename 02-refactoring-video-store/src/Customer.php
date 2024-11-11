@@ -2,20 +2,22 @@
 
 declare(strict_types=1);
 
-
 namespace App;
-
 
 class Customer
 {
+    private string $name;
+    private array $rentals;
+
     public function __construct(String $name)
     {
         $this->name = $name;
+        $this->rentals = [];
     }
 
     public function addRental(Rental $rental)
     {
-        return $this->rentals[] = $rental;
+        $this->rentals[] = $rental;
     }
 
     public function getName(): string
@@ -67,7 +69,4 @@ class Customer
 
         return $result;
     }
-
-    private string $name;
-    private array $rentals = [];
 }
