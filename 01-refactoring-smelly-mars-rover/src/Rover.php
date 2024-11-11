@@ -19,8 +19,8 @@ class Rover
 
     public function receive(string $commandsSequence): void
     {
-        $commandsSequenceLenght = strlen($commandsSequence);
-        for ($i = 0; $i < $commandsSequenceLenght; ++$i) {
+        $commandsSequenceLength = strlen($commandsSequence);
+        for ($i = 0; $i < $commandsSequenceLength; ++$i) {
             $command = substr($commandsSequence, $i, 1);
             if ($command === "l" || $command === "r") {
                 // Rotate Rover
