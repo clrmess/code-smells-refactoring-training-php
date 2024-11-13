@@ -32,7 +32,7 @@ class BirthdayService
         }
     }
 
-    protected function sendMessage(
+    private function sendMessage(
         string $smtpHost,
         int $smtpPort,
         string $sender,
@@ -52,6 +52,7 @@ class BirthdayService
         $this->send($msg, $mailer);
     }
 
+    // made protected for testing :-(
     protected function send(Swift_Message $msg, Swift_Mailer $mailer)
     {
         $mailer->send($msg);
