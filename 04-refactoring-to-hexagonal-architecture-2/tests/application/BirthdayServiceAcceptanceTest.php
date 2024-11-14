@@ -34,7 +34,7 @@ class BirthdayServiceAcceptanceTest extends TestCase
                 $this->messagesSent = $messagesSent;
             }
 
-            protected function sendMessage(Swift_Message $msg, Swift_Mailer $mailer)
+            protected function send(Swift_Message $msg, Swift_Mailer $mailer): void
             {
                 $this->messagesSent[] = $msg;
             }

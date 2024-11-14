@@ -25,13 +25,14 @@ class BirthdayService
 
     public function sendGreetings(
         OurDate $date,
-        string $smtpHost,
-        int $smtpPort,
-        string $sender
-    ): void {
+        string  $smtpHost,
+        int     $smtpPort,
+        string  $sender
+    ): void
+    {
 
-        $this->send($this->greetingMessagesFor($this->employeesHavingBirthday($date)),
-                    $smtpHost, $smtpPort, $sender);
+        $this->sendMessages($this->greetingMessagesFor($this->employeesHavingBirthday($date)),
+            $smtpHost, $smtpPort, $sender);
     }
 
     private function greetingMessagesFor(array $employees): array
@@ -49,41 +50,40 @@ class BirthdayService
         ));
     }
 
-    private function send(array $messages, string $smtpHost, int $smtpPort, string $sender)
+    private function sendMessages(array $messages, string $smtpHost, int $smtpPort, string $sender): void
     {
         /** @var GreetingMessage $message */
-        foreach($messages as $message) {
+        foreach ($messages as $message) {
             $recipient = $message->getTo();
             $body = $message->getText();
             $subject = $message->getSubject();
-            $this->trySendMessage($smtpHost, $smtpPort, $sender, $subject, $body, $recipient);
+            $this->sendMessage($smtpHost, $smtpPort, $sender, $subject, $body, $recipient);
         }
     }
 
-    private function trySendMessage(
+    private function sendMessage(
         string $smtpHost,
-        int $smtpPort,
+        int    $smtpPort,
         string $sender,
         string $subject,
         string $body,
         string $recipient
-    ): void {
-        // Create a mailer
+    ): void
+    {
         $mailer = new Swift_Mailer(
             new Swift_SmtpTransport($smtpHost, $smtpPort)
         );
-        // Construct the message
+
         $msg = new Swift_Message($subject);
         $msg->setFrom($sender)
             ->setTo([$recipient])
             ->setBody($body);
 
-        // Send the message
-        $this->sendMessage($msg, $mailer);
+        $this->send($msg, $mailer);
     }
 
-    //made protected for testing :-(
-    protected function sendMessage(Swift_Message $msg, Swift_Mailer $mailer)
+    // made protected for testing :-(
+    protected function send(Swift_Message $msg, Swift_Mailer $mailer): void
     {
         $mailer->send($msg);
     }
