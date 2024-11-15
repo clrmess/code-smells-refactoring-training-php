@@ -23,14 +23,8 @@ class BirthdayService
         $this->employeeRepository = $employeeRepository;
     }
 
-    public function sendGreetings(
-        OurDate $date,
-        string  $smtpHost,
-        int     $smtpPort,
-        string  $sender
-    ): void
+    public function sendGreetings(OurDate $date,string  $smtpHost,int $smtpPort, string $sender): void
     {
-
         $this->sendMessages($this->greetingMessagesFor($this->employeesHavingBirthday($date)),
             $smtpHost, $smtpPort, $sender);
     }
@@ -61,24 +55,21 @@ class BirthdayService
         }
     }
 
-    private function sendMessage(
-        string $smtpHost,
-        int    $smtpPort,
-        string $sender,
-        string $subject,
-        string $body,
-        string $recipient
-    ): void
+    private function sendMessage(string $smtpHost, int $smtpPort, string $sender,
+                                 string $subject, string $body, string $recipient): void
     {
+        // Create a mailer
         $mailer = new Swift_Mailer(
             new Swift_SmtpTransport($smtpHost, $smtpPort)
         );
 
+        // Construct the message
         $msg = new Swift_Message($subject);
         $msg->setFrom($sender)
             ->setTo([$recipient])
             ->setBody($body);
 
+        // Send the message
         $this->send($msg, $mailer);
     }
 

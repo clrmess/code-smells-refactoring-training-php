@@ -44,7 +44,7 @@ class BirthdayServiceAcceptanceTest extends TestCase
     /** @test */
     public function baseScenario(): void
     {
-        $today = OurDateFactory::ourDateFromString("2008/10/08");
+        $today = OurDateFactory::create("2008/10/08");
 
         $this->service->sendGreetings($today, self::SMTP_HOST, self::SMTP_PORT, self::FROM);
 
@@ -60,7 +60,7 @@ class BirthdayServiceAcceptanceTest extends TestCase
     /** @test */
     public function willNotSendEmailsWhenNobodysBirthday(): void
     {
-        $today = OurDateFactory::ourDateFromString('2008/01/01');
+        $today = OurDateFactory::create('2008/01/01');
 
         $this->service->sendGreetings(
             $today,

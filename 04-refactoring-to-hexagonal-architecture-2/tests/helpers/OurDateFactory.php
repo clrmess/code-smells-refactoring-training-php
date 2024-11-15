@@ -9,7 +9,7 @@ class OurDateFactory
 {
     private const DATE_FORMAT = "Y/m/d";
 
-    public static function ourDateFromString(string $dateAsString): OurDate
+    public static function create(string $dateAsString): OurDate
     {
         $dateTime = DateTime::createFromFormat(self::DATE_FORMAT, $dateAsString);
         if(!$dateTime){
