@@ -28,7 +28,7 @@ class OurDateTest extends TestCase
     public function invalidDateAreNotCreated($date)
     {
         $this->expectException(InvalidArgumentException::class);
-        $invalidDate = new OurDate($date);
+        new OurDate($date);
     }
 
     public function invalidDates(): array
