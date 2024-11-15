@@ -41,8 +41,8 @@ class AcceptanceTest extends TestCase
         $this->service->sendGreetings(
             dirname(__FILE__) . '/resources/employee_data.txt',
             new OurDate('2008/10/08'),
-            static::SMTP_HOST,
-            static::SMTP_PORT
+            self::SMTP_HOST,
+            self::SMTP_PORT
         );
 
         $this->assertEquals(1, $this->service->count(), 'message not sent?');
@@ -59,8 +59,8 @@ class AcceptanceTest extends TestCase
         $this->service->sendGreetings(
             dirname(__FILE__) . '/resources/employee_data.txt',
             new OurDate('2008/01/01'),
-            static::SMTP_HOST,
-            static::SMTP_PORT
+            self::SMTP_HOST,
+            self::SMTP_PORT
         );
 
         $this->assertEquals(0, $this->service->count(), 'what? messages?');
