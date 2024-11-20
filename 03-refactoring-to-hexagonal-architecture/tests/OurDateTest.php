@@ -14,7 +14,7 @@ class OurDateTest extends TestCase
         $OurDate = new OurDate('1789/01/24');
         $sameDay = new OurDate('2001/01/24');
         $notSameDay = new OurDate('1789/01/25');
-        $notSameMonth = new OurDate('1789/02/25');
+        $notSameMonth = new OurDate('1789/02/24');
 
         $this->assertTrue($OurDate->isSameDay($sameDay), 'same');
         $this->assertFalse($OurDate->isSameDay($notSameDay), 'not same day');
