@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Swift_Mailer;
 use Swift_Message;
 
-class BirthdayServiceAcceptanceTest extends TestCase
+class AcceptanceTest extends TestCase
 {
     private const SMTP_HOST = '127.0.0.1';
     private const SMTP_PORT = 25;
@@ -25,8 +25,7 @@ class BirthdayServiceAcceptanceTest extends TestCase
     {
         $employeesFilePath = dirname(__FILE__) . self::EMPLOYEES_FILE_PATH;
         $this->service = new class([], new FileEmployeesRepository($employeesFilePath)) extends BirthdayService {
-
-            public $messagesSent;
+            private array $messagesSent;
 
             public function __construct($messagesSent, EmployeeRepository $employeeRepository)
             {
@@ -38,6 +37,16 @@ class BirthdayServiceAcceptanceTest extends TestCase
             {
                 $this->messagesSent[] = $msg;
             }
+
+            public function countSentMessages(): int
+            {
+                return count($this->messagesSent);
+            }
+
+            public function getNthMessage(int $n): Swift_Message
+            {
+                return $this->messagesSent[$n];
+            }
         };
     }
 
@@ -48,9 +57,9 @@ class BirthdayServiceAcceptanceTest extends TestCase
 
         $this->service->sendGreetings($today, self::SMTP_HOST, self::SMTP_PORT, self::FROM);
 
-        $this->assertEquals(1, count($this->service->messagesSent), "message not sent?");
+        $this->assertEquals(1, $this->service->countSentMessages(), "message not sent?");
         /* @var Swift_Message $message */
-        $message = $this->service->messagesSent[0];
+        $message = $this->service->getNthMessage(0);
         $this->assertEquals("Happy Birthday, dear John!", $message->getBody());
         $this->assertEquals("Happy Birthday!", $message->getSubject());
         $this->assertEquals(1, count($message->getTo()));
@@ -69,6 +78,6 @@ class BirthdayServiceAcceptanceTest extends TestCase
             self::FROM
         );
 
-        $this->assertEquals(0, count($this->service->messagesSent), 'what? messages?');
+        $this->assertEquals(0, $this->service->countSentMessages(), 'what? messages?');
     }
 }
