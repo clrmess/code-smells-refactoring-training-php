@@ -16,21 +16,21 @@ class AcceptanceTest extends TestCase
     protected function setUp(): void
     {
         $this->service = new class() extends BirthdayService {
-            private array $messageSent = [];
+            private array $messagesSent = [];
 
             protected function send(Swift_Message $msg, Swift_Mailer $mailer): void
             {
-                $this->messageSent[] = $msg;
+                $this->messagesSent[] = $msg;
             }
 
-            public function count(): int
+            public function countSentMessages(): int
             {
-                return count($this->messageSent);
+                return count($this->messagesSent);
             }
 
-            public function get(int $index): Swift_Message
+            public function getNthMessage(int $n): Swift_Message
             {
-                return $this->messageSent[$index];
+                return $this->messagesSent[$n];
             }
         };
     }
@@ -45,9 +45,9 @@ class AcceptanceTest extends TestCase
             self::SMTP_PORT
         );
 
-        $this->assertEquals(1, $this->service->count(), 'message not sent?');
+        $this->assertEquals(1, $this->service->countSentMessages(), 'message not sent?');
         /** @var Swift_Message $message */
-        $message =  $this->service->get(0);
+        $message =  $this->service->getNthMessage(0);
         $this->assertEquals('Happy Birthday, dear John!', $message->getBody());
         $this->assertEquals('Happy Birthday!', $message->getSubject());
         $this->assertEquals('john.doe@foobar.com', key($message->getTo()));
@@ -63,6 +63,6 @@ class AcceptanceTest extends TestCase
             self::SMTP_PORT
         );
 
-        $this->assertEquals(0, $this->service->count(), 'what? messages?');
+        $this->assertEquals(0, $this->service->countSentMessages(), 'what? messages?');
     }
 }
